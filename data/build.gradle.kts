@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -33,6 +34,19 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":core"))
+
+    implementation(libs.androidx.hilt)
+    ksp(libs.hilt.compiler)
+
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.room.compiler)
+
+    implementation(libs.paging)
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
