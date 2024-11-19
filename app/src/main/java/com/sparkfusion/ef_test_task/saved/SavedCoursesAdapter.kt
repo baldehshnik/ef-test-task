@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.sparkfusion.core.R
 import com.sparkfusion.data.entity.LocalCourseDataEntity
 import com.sparkfusion.ef_test_task.databinding.ItemCourseBinding
-import com.sparkfusion.ef_test_task.main.OnCourseClickListener
+import com.sparkfusion.ef_test_task.home.OnCourseClickListener
 
 class SavedCoursesAdapter(
     private val listener: OnCourseClickListener

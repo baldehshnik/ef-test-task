@@ -1,4 +1,4 @@
-package com.sparkfusion.ef_test_task.main
+package com.sparkfusion.features.home.presentation.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,14 +7,15 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.sparkfusion.data.entity.CourseEntity
-import com.sparkfusion.ef_test_task.databinding.ItemCourseBinding
+import com.sparkfusion.features.home.databinding.ItemCourseBinding
+import com.sparkfusion.features.home.domain.model.CourseModel
+import com.sparkfusion.features.home.presentation.OnCourseClickListener
 import com.sparkfusion.core.R as CoreResources
 
 class CourseAdapter(
     private val listener: OnCourseClickListener
 ) :
-    PagingDataAdapter<CourseEntity, CourseAdapter.CourseViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<CourseModel, CourseAdapter.CourseViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
         val binding = ItemCourseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,7 +31,7 @@ class CourseAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(course: CourseEntity?, listener: OnCourseClickListener) {
+        fun bind(course: CourseModel?, listener: OnCourseClickListener) {
             binding.titleTextView.text = course?.summary ?: "-"
             binding.descriptionTextView.text = course?.description ?: "-"
             binding.createdTextView.text = "Created: ${course?.created ?: "-"}"
@@ -53,13 +54,13 @@ class CourseAdapter(
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CourseEntity>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CourseModel>() {
 
-            override fun areItemsTheSame(oldItem: CourseEntity, newItem: CourseEntity): Boolean {
+            override fun areItemsTheSame(oldItem: CourseModel, newItem: CourseModel): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: CourseEntity, newItem: CourseEntity): Boolean {
+            override fun areContentsTheSame(oldItem: CourseModel, newItem: CourseModel): Boolean {
                 return oldItem == newItem
             }
         }

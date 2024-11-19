@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
@@ -7,17 +7,14 @@ plugins {
 }
 
 android {
-    namespace = "com.sparkfusion.ef_test_task"
+    namespace = "com.sparkfusion.features.home"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.sparkfusion.ef_test_task"
         minSdk = 23
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -43,21 +40,12 @@ android {
 
 dependencies {
 
-    implementation(project(":data"))
     implementation(project(":core"))
-
-    implementation(project(":features:home"))
 
     implementation(libs.androidx.hilt)
     ksp(libs.hilt.compiler)
 
     implementation(libs.glide)
-
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.gson)
-
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.room.compiler)
 
     implementation(libs.paging)
 

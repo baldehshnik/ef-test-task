@@ -1,4 +1,4 @@
-package com.sparkfusion.ef_test_task.main
+package com.sparkfusion.features.home.presentation
 
 interface OnCourseClickListener {
     fun onCourseClick(courseId: Int)

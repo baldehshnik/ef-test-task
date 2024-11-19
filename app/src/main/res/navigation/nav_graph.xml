@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.sparkfusion.ef_test_task.main.HomeFragment"
+        android:name="com.sparkfusion.features.home.presentation.fragment.HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_courseInfoFragment"

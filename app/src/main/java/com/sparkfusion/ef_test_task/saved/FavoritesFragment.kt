@@ -10,8 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sparkfusion.ef_test_task.R
-import com.sparkfusion.ef_test_task.main.HomeFragmentDirections
-import com.sparkfusion.ef_test_task.main.OnCourseClickListener
+import com.sparkfusion.ef_test_task.home.OnCourseClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

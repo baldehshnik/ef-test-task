@@ -23,3 +23,4 @@ rootProject.name = "ef-test-task"
 include(":app")
 include(":data")
 include(":core")
+include(":features:home")

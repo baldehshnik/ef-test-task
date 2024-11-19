@@ -1,4 +1,4 @@
-package com.sparkfusion.ef_test_task.main
+package com.sparkfusion.features.home.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.sparkfusion.ef_test_task.R
+import com.sparkfusion.features.home.R
+import com.sparkfusion.features.home.presentation.OnCourseClickListener
+import com.sparkfusion.features.home.presentation.adapter.CourseAdapter
+import com.sparkfusion.features.home.presentation.viewmodel.CourseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -46,8 +48,7 @@ class HomeFragment : Fragment(), OnCourseClickListener {
     }
 
     override fun onCourseClick(courseId: Int) {
-        val direction = HomeFragmentDirections.actionHomeFragmentToCourseInfoFragment(courseId)
-        findNavController().navigate(direction)
+        viewModel.navigateToDetails(courseId)
     }
 }
 
