@@ -1,4 +1,4 @@
-package com.sparkfusion.ef_test_task.saved
+package com.sparkfusion.features.favorite.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.sparkfusion.ef_test_task.R
-import com.sparkfusion.ef_test_task.home.OnCourseClickListener
+import com.sparkfusion.features.favorite.R
+import com.sparkfusion.features.favorite.presentation.OnCourseClickListener
+import com.sparkfusion.features.favorite.presentation.adapter.SavedCoursesAdapter
+import com.sparkfusion.features.favorite.presentation.viewmodel.FavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +19,11 @@ class FavoritesFragment : Fragment(), OnCourseClickListener {
 
     private val viewModel: FavoritesViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
@@ -37,8 +42,7 @@ class FavoritesFragment : Fragment(), OnCourseClickListener {
     }
 
     override fun onCourseClick(courseId: Int) {
-        val direction = FavoritesFragmentDirections.actionFavoritesFragmentToCourseInfoFragment(courseId)
-        findNavController().navigate(direction)
+        viewModel.navigateToCourseDetails(courseId)
     }
 }
 

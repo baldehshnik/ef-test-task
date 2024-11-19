@@ -1,4 +1,4 @@
-package com.sparkfusion.ef_test_task.saved
+package com.sparkfusion.features.favorite.presentation.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sparkfusion.core.R
-import com.sparkfusion.data.entity.LocalCourseDataEntity
-import com.sparkfusion.ef_test_task.databinding.ItemCourseBinding
-import com.sparkfusion.ef_test_task.home.OnCourseClickListener
+import com.sparkfusion.features.favorite.databinding.ItemCourseBinding
+import com.sparkfusion.features.favorite.domain.model.LocalCourseModel
+import com.sparkfusion.features.favorite.presentation.OnCourseClickListener
 
 class SavedCoursesAdapter(
     private val listener: OnCourseClickListener
-) : ListAdapter<LocalCourseDataEntity, SavedCoursesAdapter.CourseViewHolder>(DIFF_CALLBACK) {
+) : ListAdapter<LocalCourseModel, SavedCoursesAdapter.CourseViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
         val binding = ItemCourseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,7 +30,7 @@ class SavedCoursesAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(course: LocalCourseDataEntity, listener: OnCourseClickListener) {
+        fun bind(course: LocalCourseModel, listener: OnCourseClickListener) {
             binding.titleTextView.text = course.summary
             binding.descriptionTextView.text = course.description
             binding.createdTextView.text = "Created: ${course.created}"
@@ -51,17 +51,15 @@ class SavedCoursesAdapter(
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<LocalCourseDataEntity>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<LocalCourseModel>() {
             override fun areItemsTheSame(
-                oldItem: LocalCourseDataEntity,
-                newItem: LocalCourseDataEntity
+                oldItem: LocalCourseModel, newItem: LocalCourseModel
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: LocalCourseDataEntity,
-                newItem: LocalCourseDataEntity
+                oldItem: LocalCourseModel, newItem: LocalCourseModel
             ): Boolean {
                 return oldItem == newItem
             }
