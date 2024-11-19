@@ -1,4 +1,4 @@
-package com.sparkfusion.ef_test_task.course
+package com.sparkfusion.features.details.presentation.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -7,11 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sparkfusion.core.dispatchers.IODispatcher
 import com.sparkfusion.core.dispatchers.MainDispatcher
-import com.sparkfusion.data.entity.AuthorDataEntity
-import com.sparkfusion.data.entity.CourseInfoDataEntity
-import com.sparkfusion.data.entity.LocalCourseDataEntity
-import com.sparkfusion.data.repository.ICourseDataRepository
-import com.sparkfusion.data.repository.IUserDataRepository
+import com.sparkfusion.features.details.domain.model.AuthorModel
+import com.sparkfusion.features.details.domain.model.CourseInfoModel
+import com.sparkfusion.features.details.domain.model.LocalCourseModel
+import com.sparkfusion.features.details.domain.repository.IDetailsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainCoroutineDispatcher
@@ -23,21 +22,20 @@ import javax.inject.Inject
 class CourseInfoViewModel @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     @MainDispatcher private val mainDispatcher: MainCoroutineDispatcher,
-    private val courseDataRepository: ICourseDataRepository,
-    private val userDataRepository: IUserDataRepository
+    private val repository: IDetailsRepository
 ) : ViewModel() {
 
-    private val _course = MutableLiveData<CourseInfoDataEntity>()
-    val course: LiveData<CourseInfoDataEntity> get() = _course
+    private val _course = MutableLiveData<CourseInfoModel>()
+    val course: LiveData<CourseInfoModel> get() = _course
 
-    private val _authors = MutableLiveData<List<AuthorDataEntity>>()
-    val authors: LiveData<List<AuthorDataEntity>> get() = _authors
+    private val _authors = MutableLiveData<List<AuthorModel>>()
+    val authors: LiveData<List<AuthorModel>> get() = _authors
 
     fun saveCourse() {
         viewModelScope.launch(ioDispatcher) {
             val c = course.value ?: return@launch
-            courseDataRepository.insertCourse(
-                LocalCourseDataEntity(
+            repository.insertCourse(
+                LocalCourseModel(
                     c.id,
                     c.summary,
                     c.cover,
@@ -52,18 +50,18 @@ class CourseInfoViewModel @Inject constructor(
     fun deleteCourse() {
         viewModelScope.launch(ioDispatcher) {
             val c = course.value ?: return@launch
-            courseDataRepository.deleteCourse(c.id)
+            repository.deleteCourse(c.id)
         }
     }
 
     fun readCourse(id: Int) {
         viewModelScope.launch(ioDispatcher) {
-            courseDataRepository.readCourseById(id)
+            repository.readCourseById(id)
                 .onSuccess { model ->
                     withContext(mainDispatcher) {
-                        _course.value = model.courses[0]
+                        _course.value = model
                     }
-                    readAuthors(model.courses[0].authors)
+                    readAuthors(model.authors)
                 }
                 .onFailure {
                     Log.i("TAGTAG", "view model error - " + it.message.toString())
@@ -72,11 +70,11 @@ class CourseInfoViewModel @Inject constructor(
     }
 
     private suspend fun readAuthors(ids: List<Int>) = withContext(ioDispatcher) {
-        val users = mutableListOf<AuthorDataEntity>()
+        val users = mutableListOf<AuthorModel>()
         for (id in ids) {
-            userDataRepository.readUserById(id)
+            repository.readUserById(id)
                 .onSuccess {
-                    users.add(it.authors[0])
+                    users.add(it)
                 }
                 .onFailure {
                     Log.i("TAGTAG", "view model error - " + it.message.toString())

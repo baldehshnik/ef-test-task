@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/courseInfoFragment"
-        android:name="com.sparkfusion.ef_test_task.course.CourseInfoFragment"
+        android:name="com.sparkfusion.features.details.presentation.fragment.CourseInfoFragment"
         tools:layout="@layout/fragment_course_info" >
         <argument
             android:name="courseId"

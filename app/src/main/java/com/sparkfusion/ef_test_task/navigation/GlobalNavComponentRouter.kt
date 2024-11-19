@@ -1,5 +1,6 @@
 package com.sparkfusion.ef_test_task.navigation
 
+import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
@@ -26,8 +27,8 @@ class GlobalNavComponentRouter @Inject constructor() : ActivityRequired {
         getRootNavController().popBackStack()
     }
 
-    fun launch(@IdRes destinationId: Int) {
-        getRootNavController().navigate(destinationId)
+    fun launch(@IdRes destinationId: Int, bundle: Bundle?) {
+        getRootNavController().navigate(destinationId, bundle)
     }
 
     fun launch(direction: NavDirections) {

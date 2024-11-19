@@ -1,16 +1,18 @@
-package com.sparkfusion.ef_test_task.course
+package com.sparkfusion.features.details.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.sparkfusion.ef_test_task.databinding.FragmentCourseInfoBinding
+import com.sparkfusion.features.details.databinding.FragmentCourseInfoBinding
+import com.sparkfusion.features.details.presentation.adapter.AuthorsAdapter
+import com.sparkfusion.features.details.presentation.viewmodel.CourseInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,7 +21,6 @@ class CourseInfoFragment : Fragment() {
     private val viewModel: CourseInfoViewModel by viewModels()
 
     private lateinit var binding: FragmentCourseInfoBinding
-    private val args: CourseInfoFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,8 +34,11 @@ class CourseInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val courseId = args.courseId
-        viewModel.readCourse(courseId)
+        val courseId = arguments?.getInt("courseId")
+        if (courseId != null) viewModel.readCourse(courseId)
+        else {
+            Toast.makeText(requireContext(), "Not found", Toast.LENGTH_SHORT).show()
+        }
 
         viewModel.course.observe(viewLifecycleOwner) { course ->
             binding.titleTextView.text = course.summary
