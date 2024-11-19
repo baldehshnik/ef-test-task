@@ -9,6 +9,7 @@ import com.sparkfusion.core.dispatchers.IODispatcher
 import com.sparkfusion.core.dispatchers.MainDispatcher
 import com.sparkfusion.data.entity.AuthorDataEntity
 import com.sparkfusion.data.entity.CourseInfoDataEntity
+import com.sparkfusion.data.entity.LocalCourseDataEntity
 import com.sparkfusion.data.repository.ICourseDataRepository
 import com.sparkfusion.data.repository.IUserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +32,29 @@ class CourseInfoViewModel @Inject constructor(
 
     private val _authors = MutableLiveData<List<AuthorDataEntity>>()
     val authors: LiveData<List<AuthorDataEntity>> get() = _authors
+
+    fun saveCourse() {
+        viewModelScope.launch(ioDispatcher) {
+            val c = course.value ?: return@launch
+            courseDataRepository.insertCourse(
+                LocalCourseDataEntity(
+                    c.id,
+                    c.summary,
+                    c.cover,
+                    c.description,
+                    c.created,
+                    c.price
+                )
+            )
+        }
+    }
+
+    fun deleteCourse() {
+        viewModelScope.launch(ioDispatcher) {
+            val c = course.value ?: return@launch
+            courseDataRepository.deleteCourse(c.id)
+        }
+    }
 
     fun readCourse(id: Int) {
         viewModelScope.launch(ioDispatcher) {
@@ -63,8 +87,6 @@ class CourseInfoViewModel @Inject constructor(
             _authors.value = users
         }
     }
-
-
 
 
 }

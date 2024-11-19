@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -50,6 +51,12 @@ class CourseInfoFragment : Fragment() {
             binding.usersRecyclerView.adapter = authorsAdapter
             binding.usersRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
+
+        binding.notesButton.setOnClickListener {
+            viewModel.saveCourse()
+        }
+
+        binding.backButton.setOnClickListener { findNavController().popBackStack() }
     }
 }
 
