@@ -1,6 +1,7 @@
 package com.sparkfusion.data.di
 
-import com.sparkfusion.data.source.ApiService
+import com.sparkfusion.data.source.AuthorService
+import com.sparkfusion.data.source.CourseService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,8 +31,14 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
+    fun provideCourseService(retrofit: Retrofit): CourseService {
+        return retrofit.create(CourseService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthorService(retrofit: Retrofit): AuthorService {
+        return retrofit.create(AuthorService::class.java)
     }
 }
 

@@ -1,4 +1,4 @@
-package com.sparkfusion.ef_test_task
+package com.sparkfusion.ef_test_task.main
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -11,7 +11,9 @@ import com.sparkfusion.data.entity.CourseEntity
 import com.sparkfusion.ef_test_task.databinding.ItemCourseBinding
 import com.sparkfusion.core.R as CoreResources
 
-class CourseAdapter :
+class CourseAdapter(
+    private val listener: OnCourseClickListener
+) :
     PagingDataAdapter<CourseEntity, CourseAdapter.CourseViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
@@ -21,14 +23,14 @@ class CourseAdapter :
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
         val course = getItem(position)
-        holder.bind(course)
+        holder.bind(course, listener)
     }
 
     class CourseViewHolder(private val binding: ItemCourseBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(course: CourseEntity?) {
+        fun bind(course: CourseEntity?, listener: OnCourseClickListener) {
             binding.titleTextView.text = course?.summary ?: "-"
             binding.descriptionTextView.text = course?.description ?: "-"
             binding.createdTextView.text = "Created: ${course?.created ?: "-"}"
@@ -40,6 +42,12 @@ class CourseAdapter :
                     .into(binding.courseImageView)
             } else {
                 binding.courseImageView.setImageResource(CoreResources.drawable.gradient_placeholder)
+            }
+
+            binding.root.setOnClickListener {
+                course?.id?.let { id ->
+                    listener.onCourseClick(id)
+                }
             }
         }
     }

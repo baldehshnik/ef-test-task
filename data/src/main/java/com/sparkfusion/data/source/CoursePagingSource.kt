@@ -8,7 +8,7 @@ import com.sparkfusion.data.utils.safePagingApiCall
 import kotlinx.coroutines.CoroutineDispatcher
 
 class CoursePagingSource(
-    private val apiService: ApiService,
+    private val courseService: CourseService,
     private val dispatcher: CoroutineDispatcher,
 ) : PagingSource<Int, CourseEntity>() {
 
@@ -16,7 +16,7 @@ class CoursePagingSource(
         val page = params.key ?: 1
 
         return safePagingApiCall(dispatcher) {
-            val response = apiService.getCourses(page = page)
+            val response = courseService.getCourses(page = page)
 
             if (!response.isSuccessful) return@safePagingApiCall LoadResult.Error(
                 handleExceptionCode(response.code())

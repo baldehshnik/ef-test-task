@@ -2,7 +2,7 @@ package com.sparkfusion.data.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class CourseEntity(
+data class CourseInfoDataEntity(
 
     @SerializedName("id")
     val id: Int,
@@ -20,5 +20,8 @@ data class CourseEntity(
     val created: String,
 
     @SerializedName("display_price")
-    val price: String
+    val price: String,
+
+    @SerializedName("authors")
+    val authors: List<Int>
 )

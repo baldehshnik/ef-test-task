@@ -1,13 +1,13 @@
 package com.sparkfusion.data.source
 
-import com.sparkfusion.data.entity.CourseEntity
+import com.sparkfusion.data.entity.CourseInfoListDataEntity
 import com.sparkfusion.data.entity.CoursesListDataEntity
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ApiService {
+interface CourseService {
 
     @GET("courses?language=en")
     suspend fun getCourses(
@@ -15,7 +15,7 @@ interface ApiService {
     ): Response<CoursesListDataEntity>
 
     @GET("courses/{id}")
-    suspend fun getCourseById(@Path("id") id: Int): Response<CourseEntity>
+    suspend fun getCourseById(@Path("id") id: Int): Response<CourseInfoListDataEntity>
 }
 
 

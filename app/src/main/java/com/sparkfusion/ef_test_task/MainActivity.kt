@@ -1,35 +1,41 @@
 package com.sparkfusion.ef_test_task
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    private val viewModel: CourseViewModel by viewModels()
-    private lateinit var courseAdapter: CourseAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        courseAdapter = CourseAdapter()
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = courseAdapter
-
-        lifecycleScope.launch {
-            viewModel.courses().collectLatest { pagingData ->
-                courseAdapter.submitData(pagingData)
-            }
-        }
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        NavigationUI.setupWithNavController(bottomNavigationView, navController)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

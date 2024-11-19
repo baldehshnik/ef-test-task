@@ -7,7 +7,7 @@ import retrofit2.Response
 
 class ApiListResponseHandler<R>(
     private val response: Response<List<R>>,
-    private val handleExceptionCode: (code: Int) -> MainException
+    private val handleExceptionCode: (code: Int) -> MainException = ::handleExceptionCode
 ) {
 
     fun handleFetchedData(): Answer<List<R>> {
