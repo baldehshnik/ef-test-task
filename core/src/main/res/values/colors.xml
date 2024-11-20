@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="onBackground">#F2F2F3</color>
+    <color name="darker_gray">#24252A</color>
+    <color name="semitransparent_card_background">#32333A4D</color>
+</resources>

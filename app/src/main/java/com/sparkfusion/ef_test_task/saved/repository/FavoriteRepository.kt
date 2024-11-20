@@ -1,5 +1,6 @@
 package com.sparkfusion.ef_test_task.saved.repository
 
+import com.sparkfusion.core.common.Answer
 import com.sparkfusion.core.dispatchers.IODispatcher
 import com.sparkfusion.data.repository.ICourseDataRepository
 import com.sparkfusion.ef_test_task.saved.factory.LocalCourseDataEntityFactory
@@ -23,6 +24,10 @@ class FavoriteRepository @Inject constructor(
         courseDataRepository.readSavedCourses().map {
             it.map { dataEntity -> localCourseDataEntityFactory.mapTo(dataEntity) }
         }
+    }
+
+    override suspend fun deleteCourse(id: Int): Answer<Unit> = withContext(ioDispatcher) {
+        courseDataRepository.deleteCourse(id)
     }
 }
 

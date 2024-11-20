@@ -10,10 +10,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sparkfusion.features.home.R
+import com.sparkfusion.features.home.domain.model.CourseModel
 import com.sparkfusion.features.home.presentation.OnCourseClickListener
 import com.sparkfusion.features.home.presentation.adapter.CourseAdapter
 import com.sparkfusion.features.home.presentation.viewmodel.CourseViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -22,6 +24,7 @@ class HomeFragment : Fragment(), OnCourseClickListener {
 
     private val viewModel: CourseViewModel by viewModels()
     private lateinit var courseAdapter: CourseAdapter
+    private var collectJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,28 +43,23 @@ class HomeFragment : Fragment(), OnCourseClickListener {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = courseAdapter
 
-        lifecycleScope.launch {
-            viewModel.courses().collectLatest { pagingData ->
+        collectJob = lifecycleScope.launch {
+            viewModel.coursesStateFlow.collectLatest { pagingData ->
                 courseAdapter.submitData(pagingData)
             }
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        collectJob?.cancel()
+    }
+
     override fun onCourseClick(courseId: Int) {
         viewModel.navigateToDetails(courseId)
     }
+
+    override fun onSaveButtonClick(courseModel: CourseModel) {
+        viewModel.changeCourseSaveStatus(courseModel)
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

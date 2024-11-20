@@ -26,24 +26,30 @@ class DetailsRepository @Inject constructor(
     private val localCourseDataEntityFactory: LocalCourseDataEntityFactory
 ) : IDetailsRepository {
 
-    override suspend fun insertCourse(localCourseModel: LocalCourseModel) = withContext(ioDispatcher) {
-        courseDataRepository.insertCourse(localCourseDataEntityFactory.mapFrom(localCourseModel))
-    }
+    override suspend fun insertCourse(localCourseModel: LocalCourseModel): Answer<Unit> =
+        withContext(ioDispatcher) {
+            courseDataRepository.insertCourse(localCourseDataEntityFactory.mapFrom(localCourseModel))
+        }
 
-    override suspend fun deleteCourse(id: Int) = withContext(ioDispatcher) {
+    override suspend fun deleteCourse(id: Int): Answer<Unit> = withContext(ioDispatcher) {
         courseDataRepository.deleteCourse(id)
     }
 
-    override suspend fun readCourseById(id: Int): Answer<CourseInfoModel> = withContext(ioDispatcher) {
-        courseDataRepository.readCourseById(id).suspendMap {
-            courseInfoDataEntityFactory.mapTo(it.courses[0])
+    override suspend fun readCourseById(id: Int): Answer<CourseInfoModel> =
+        withContext(ioDispatcher) {
+            courseDataRepository.readCourseById(id).suspendMap {
+                courseInfoDataEntityFactory.mapTo(it.courses[0])
+            }
         }
-    }
 
     override suspend fun readUserById(id: Int): Answer<AuthorModel> = withContext(ioDispatcher) {
         usersDataRepository.readUserById(id).suspendMap {
             authorDataEntityFactory.mapTo(it.authors[0])
         }
+    }
+
+    override suspend fun existsCourse(id: Int): Answer<Boolean> = withContext(ioDispatcher) {
+        courseDataRepository.existsCourse(id)
     }
 }
 

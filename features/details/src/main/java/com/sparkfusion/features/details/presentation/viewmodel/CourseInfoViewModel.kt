@@ -31,7 +31,28 @@ class CourseInfoViewModel @Inject constructor(
     private val _authors = MutableLiveData<List<AuthorModel>>()
     val authors: LiveData<List<AuthorModel>> get() = _authors
 
-    fun saveCourse() {
+    fun changeCourseSaveStatus() {
+        if (_course.value?.isSaved == true) deleteCourse()
+        else saveCourse()
+    }
+
+    fun readCourse(id: Int) {
+        viewModelScope.launch(ioDispatcher) {
+            repository.readCourseById(id)
+                .onSuccess { model ->
+                    withContext(mainDispatcher) {
+                        _course.value = model
+                    }
+                    readAuthors(model.authors)
+                    readSavedStatus(model.id)
+                }
+                .onFailure {
+                    Log.i("TAGTAG", "view model error - " + it.message.toString())
+                }
+        }
+    }
+
+    private fun saveCourse() {
         viewModelScope.launch(ioDispatcher) {
             val c = course.value ?: return@launch
             repository.insertCourse(
@@ -43,30 +64,32 @@ class CourseInfoViewModel @Inject constructor(
                     c.created,
                     c.price
                 )
-            )
+            ).onSuccess {
+                withContext(mainDispatcher) { _course.value = course.value?.copy(isSaved = true) }
+            }
         }
     }
 
-    fun deleteCourse() {
+    private fun deleteCourse() {
         viewModelScope.launch(ioDispatcher) {
             val c = course.value ?: return@launch
             repository.deleteCourse(c.id)
+                .onSuccess {
+                    withContext(mainDispatcher) {
+                        _course.value = course.value?.copy(isSaved = false)
+                    }
+                }
         }
     }
 
-    fun readCourse(id: Int) {
-        viewModelScope.launch(ioDispatcher) {
-            repository.readCourseById(id)
-                .onSuccess { model ->
-                    withContext(mainDispatcher) {
-                        _course.value = model
-                    }
-                    readAuthors(model.authors)
-                }
-                .onFailure {
-                    Log.i("TAGTAG", "view model error - " + it.message.toString())
-                }
-        }
+    private suspend fun readSavedStatus(id: Int) = withContext(ioDispatcher) {
+        repository.existsCourse(id)
+            .onSuccess {
+                withContext(mainDispatcher) { _course.value = course.value?.copy(isSaved = it) }
+            }
+            .onFailure {
+                withContext(mainDispatcher) { _course.value = course.value?.copy(isSaved = false) }
+            }
     }
 
     private suspend fun readAuthors(ids: List<Int>) = withContext(ioDispatcher) {

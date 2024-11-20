@@ -6,5 +6,6 @@ data class CourseModel(
     val cover: String,
     val description: String,
     val created: String,
-    val price: String
+    val price: String,
+    val isSaved: Boolean = false
 )

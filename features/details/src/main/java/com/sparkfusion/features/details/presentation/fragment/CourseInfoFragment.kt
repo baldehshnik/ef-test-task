@@ -10,6 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.sparkfusion.core.converter.DateConverter
+import com.sparkfusion.core.converter.HtmlConverter
+import com.sparkfusion.features.details.R
 import com.sparkfusion.features.details.databinding.FragmentCourseInfoBinding
 import com.sparkfusion.features.details.presentation.adapter.AuthorsAdapter
 import com.sparkfusion.features.details.presentation.viewmodel.CourseInfoViewModel
@@ -40,10 +43,18 @@ class CourseInfoFragment : Fragment() {
             Toast.makeText(requireContext(), "Not found", Toast.LENGTH_SHORT).show()
         }
 
+        val dateConverter = DateConverter()
+        val htmlConverter = HtmlConverter()
         viewModel.course.observe(viewLifecycleOwner) { course ->
             binding.titleTextView.text = course.summary
-            binding.creationDateTextView.text = course.created
-            binding.descriptionTextView.text = course.description
+            binding.createdTextView.text = dateConverter.convertDateString(course.created)
+            binding.descriptionTextView.text = htmlConverter.convertHtmlToPlainText(course.description)
+
+            if (course.isSaved) {
+                binding.notesButton.setImageResource(R.drawable.ic_filled_bookmark)
+            } else {
+                binding.notesButton.setImageResource(R.drawable.ic_bookmark)
+            }
 
             Glide.with(this)
                 .load(course.cover)
@@ -57,7 +68,7 @@ class CourseInfoFragment : Fragment() {
         }
 
         binding.notesButton.setOnClickListener {
-            viewModel.saveCourse()
+            viewModel.changeCourseSaveStatus()
         }
 
         binding.backButton.setOnClickListener { findNavController().popBackStack() }

@@ -28,6 +28,9 @@ class FavoritesViewModel @Inject constructor(
     private val _courses = MutableLiveData<List<LocalCourseModel>>()
     val courses: LiveData<List<LocalCourseModel>> = _courses
 
+    private val _deletionError = MutableLiveData(false)
+    val deletionError: LiveData<Boolean> get() = _deletionError
+
     fun readCourses() {
         viewModelScope.launch(ioDispatcher) {
             val f = repository.readSavedCourses()
@@ -35,6 +38,29 @@ class FavoritesViewModel @Inject constructor(
                 _courses.value = f.firstOrNull()
             }
         }
+    }
+
+    fun deleteCourse(id: Int) {
+        viewModelScope.launch(ioDispatcher) {
+            repository.deleteCourse(id)
+                .onSuccess {
+                    val currentCourses = _courses.value ?: emptyList()
+                    val updatedCourses = currentCourses.filter { it.id != id }
+
+                    withContext(mainDispatcher) {
+                        _courses.value = updatedCourses
+                    }
+                }
+                .onFailure {
+                    withContext(mainDispatcher) {
+                        _deletionError.value = true
+                    }
+                }
+        }
+    }
+
+    fun clearDeletionStatus() {
+        _deletionError.value = false
     }
 
     fun navigateToCourseDetails(id: Int) {

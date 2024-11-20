@@ -7,5 +7,6 @@ data class CourseInfoModel(
     val description: String,
     val created: String,
     val price: String,
-    val authors: List<Int>
+    val authors: List<Int>,
+    val isSaved: Boolean = false
 )

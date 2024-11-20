@@ -13,13 +13,13 @@ interface ICourseDataRepository {
 
     suspend fun readCourseById(id: Int): Answer<CourseInfoListDataEntity>
 
-    suspend fun insertCourse(localCourseDataEntity: LocalCourseDataEntity)
+    suspend fun insertCourse(localCourseDataEntity: LocalCourseDataEntity): Answer<Unit>
 
-    suspend fun deleteCourse(id: Int)
+    suspend fun deleteCourse(id: Int): Answer<Unit>
 
     suspend fun readSavedCourses(): Flow<List<LocalCourseDataEntity>>
 
-    suspend fun existsCourse(id: Int): Int
+    suspend fun existsCourse(id: Int): Answer<Boolean>
 }
 
 
