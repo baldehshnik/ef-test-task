@@ -8,11 +8,11 @@ import javax.inject.Inject
 class CourseInfoDataEntityFactory @Inject constructor() : MapFactory<CourseInfoDataEntity, CourseInfoModel> {
 
     override suspend fun mapTo(input: CourseInfoDataEntity): CourseInfoModel = with(input) {
-        CourseInfoModel(id, summary, cover, description, created, price, authors)
+        CourseInfoModel(id, summary, cover, description, created, price, authors, canonicalUrl)
     }
 
     override suspend fun mapFrom(input: CourseInfoModel): CourseInfoDataEntity = with(input) {
-        CourseInfoDataEntity(id, summary, cover, description, created, price, authors)
+        CourseInfoDataEntity(id, summary, cover, description, created, price, authors, canonicalUrl)
     }
 }
 

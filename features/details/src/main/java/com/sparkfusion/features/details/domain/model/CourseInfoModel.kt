@@ -8,5 +8,6 @@ data class CourseInfoModel(
     val created: String,
     val price: String,
     val authors: List<Int>,
+    val canonicalUrl: String,
     val isSaved: Boolean = false
 )

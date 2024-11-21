@@ -31,16 +31,6 @@ class CourseViewModel @Inject constructor(
         loadCourses()
     }
 
-    private fun loadCourses() {
-        viewModelScope.launch(ioDispatcher) {
-            repository.readCourses()
-                .cachedIn(viewModelScope)
-                .collect { pagingData ->
-                    _coursesStateFlow.value = pagingData
-                }
-        }
-    }
-
     fun navigateToDetails(id: Int) {
         homeRouter.navigateToDetails(id)
     }
@@ -48,6 +38,21 @@ class CourseViewModel @Inject constructor(
     fun changeCourseSaveStatus(courseModel: CourseModel) {
         if (courseModel.isSaved) deleteCourse(courseModel.id)
         else insertCourse(courseModel)
+    }
+
+    fun reloadCourses(isPopular: Boolean) {
+        _coursesStateFlow.value = PagingData.empty()
+        loadCourses(isPopular)
+    }
+
+    private fun loadCourses(isPopular: Boolean = false) {
+        viewModelScope.launch(ioDispatcher) {
+            repository.readCourses(isPopular)
+                .cachedIn(viewModelScope)
+                .collect { pagingData ->
+                    _coursesStateFlow.value = pagingData
+                }
+        }
     }
 
     private fun insertCourse(courseModel: CourseModel) {

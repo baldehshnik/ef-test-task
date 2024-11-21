@@ -2,4 +2,7 @@
 <resources>
     <string name="search_courses">Search courses</string>
     <string name="read_more">Подробнее</string>
+
+    <string name="sort_by_date">По дате добавления</string>
+    <string name="sort_by_popularity">По популярности</string>
 </resources>

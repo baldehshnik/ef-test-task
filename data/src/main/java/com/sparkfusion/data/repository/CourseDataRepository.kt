@@ -28,13 +28,13 @@ class CourseDataRepository @Inject constructor(
     private val coursesDao: CoursesDao
 ) : ICourseDataRepository {
 
-    override suspend fun readCourses(): Flow<PagingData<CourseEntity>> = withContext(ioDispatcher) {
+    override suspend fun readCourses(isPopular: Boolean): Flow<PagingData<CourseEntity>> = withContext(ioDispatcher) {
         Pager(
             config = PagingConfig(
                 pageSize = 20,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { CoursePagingSource(courseService, ioDispatcher) }
+            pagingSourceFactory = { CoursePagingSource(courseService, ioDispatcher, isPopular) }
         ).flow
     }
 

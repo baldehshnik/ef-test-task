@@ -23,5 +23,8 @@ data class CourseInfoDataEntity(
     val price: String,
 
     @SerializedName("authors")
-    val authors: List<Int>
+    val authors: List<Int>,
+
+    @SerializedName("canonical_url")
+    val canonicalUrl: String
 )

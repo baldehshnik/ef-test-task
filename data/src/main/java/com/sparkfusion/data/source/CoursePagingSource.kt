@@ -10,13 +10,15 @@ import kotlinx.coroutines.CoroutineDispatcher
 class CoursePagingSource(
     private val courseService: CourseService,
     private val dispatcher: CoroutineDispatcher,
+    private val isPopular: Boolean
 ) : PagingSource<Int, CourseEntity>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CourseEntity> {
         val page = params.key ?: 1
 
         return safePagingApiCall(dispatcher) {
-            val response = courseService.getCourses(page = page)
+            val response = if (isPopular) courseService.getPopularCourses(page = page)
+                else courseService.getCourses(page = page)
 
             if (!response.isSuccessful) return@safePagingApiCall LoadResult.Error(
                 handleExceptionCode(response.code())

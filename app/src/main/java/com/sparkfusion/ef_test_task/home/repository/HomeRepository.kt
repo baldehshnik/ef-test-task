@@ -1,5 +1,6 @@
 package com.sparkfusion.ef_test_task.home.repository
 
+import android.util.Log
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.sparkfusion.core.common.Answer
@@ -24,9 +25,10 @@ class HomeRepository @Inject constructor(
     private val localCourseDataEntityFactory: LocalCourseDataEntityFactory
 ) : IHomeRepository {
 
-    override suspend fun readCourses(): Flow<PagingData<CourseModel>> = withContext(ioDispatcher) {
-        courseDataRepository.readCourses().map {
+    override suspend fun readCourses(isPopular: Boolean): Flow<PagingData<CourseModel>> = withContext(ioDispatcher) {
+        courseDataRepository.readCourses(isPopular).map {
             it.map { entity ->
+                Log.i("TAGTAG", "entity - $entity")
                 var isSaved = false
                 existsCourse(entity.id).onSuccess { saved -> isSaved = saved }
 

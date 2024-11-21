@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface IHomeRepository {
 
-    suspend fun readCourses(): Flow<PagingData<CourseModel>>
+    suspend fun readCourses(isPopular: Boolean): Flow<PagingData<CourseModel>>
 
     suspend fun existsCourse(id: Int): Answer<Boolean>
 

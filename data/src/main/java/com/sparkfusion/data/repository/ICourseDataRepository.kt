@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ICourseDataRepository {
 
-    suspend fun readCourses(): Flow<PagingData<CourseEntity>>
+    suspend fun readCourses(isPopular: Boolean): Flow<PagingData<CourseEntity>>
 
     suspend fun readCourseById(id: Int): Answer<CourseInfoListDataEntity>
 

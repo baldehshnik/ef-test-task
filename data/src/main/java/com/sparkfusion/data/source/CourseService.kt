@@ -14,6 +14,11 @@ interface CourseService {
         @Query("page") page: Int = 1
     ): Response<CoursesListDataEntity>
 
+    @GET("courses?language=en&is_popular=true")
+    suspend fun getPopularCourses(
+        @Query("page") page: Int = 1
+    ): Response<CoursesListDataEntity>
+
     @GET("courses/{id}")
     suspend fun getCourseById(@Path("id") id: Int): Response<CourseInfoListDataEntity>
 }

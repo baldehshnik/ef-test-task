@@ -9,6 +9,9 @@
 
         <item name="android:navigationBarColor">@color/bottomBarBackground</item>
         <item name="android:statusBarColor">#151515</item>
+
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/onBackground</item>
     </style>
 
     <style name="Theme.Eftesttask" parent="Base.Theme.Eftesttask" />
